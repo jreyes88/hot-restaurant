@@ -59,11 +59,11 @@ app.post('/api/tables', function(req, res){
 	var newTable = req.body
 	newTable.customerID = newTable.customerName.replace(/\s+/g, '').toLowerCase();
 
-	console.log(newTable);
+	// console.log(newTable);
 
-	arraySelector(newTable, res);
-
-	// res.json(newTable);
+	data = arraySelector(newTable, res);
+	console.log(data);
+	res.json(data);
 })
 
 // Starts the server to begin listening 
@@ -72,21 +72,18 @@ app.listen(PORT, function(){
 	console.log('App listening on PORT ' + PORT);
 })
 
-
-
 function arraySelector(newTable, res){
 	if (tables.length >= 5) {
+		console.log("if");
 		var wait = newTable;
 		waitList.push(wait);
-		res.json(wait);
-		counter ++;
 		data = false;
 	} else {
+		console.log("else");
 		var getASeat = newTable;
 		tables.push(getASeat);
-		res.json(getASeat)
-		counter ++;
 	}
+	return data;
 }
 
 function clearTables() {
