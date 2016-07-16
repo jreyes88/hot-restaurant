@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
+var data = true;
 
 // Sets up the Express App
 // =============================================================
@@ -17,61 +18,9 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
 // Reserved Table (DATA)
 // =============================================================
-var tables = [
+var tables = [];
 
-	{	
-		customerName: "Justin",
-		phoneNumber: "512-740-1881",
-		customerEmail: "justinrleblanc@yahoo.com",
-		customerID: "JustinL"		
-	},
-
-	{
-		customerName: "Chance",
-		phoneNumber: "512-555-1234",
-		customerEmail: "chance@email.com",
-		customerID: "Chance"		
-	},
-
-	{
-		customerName: "Joey",
-		phoneNumber: "512-668-1234",
-		customerEmail: "joey@mymail.com",
-		customerID: "Joey"
-	},
-
-	{
-		customerName: "Sam",
-		phoneNumber: "512-669-1234",
-		customerEmail: "sam@mymail.com",
-		customerID: "Sam"
-	},
-
-	{
-		customerName: "Lisa",
-		phoneNumber: "512-668-1235",
-		customerEmail: "lisa@mymail.com",
-		customerID: "Lisa"
-	}
-]
-
-var waitList = [
-
-	{	
-		customerName: "Yoda",
-		phoneNumber: "Jedi Master",
-		customerEmail: "yoda@starwars.com",
-		customerID: "Yoda"		
-	},
-
-	{
-		customerName: "Boba Fett",
-		phoneNumber: "999-222-1111",
-		customerEmail: "bobafett@starwars.com",
-		customerID: "Boba"		
-	}
-
-]
+var waitList = [];
 
 // Routes
 // =============================================================
@@ -96,8 +45,8 @@ app.get('/api/tables', function(req, res){
 		res.json(tables);
 })
 
-app.get('/api/waitlist', function(req, res){	
-		res.json(waitlist);
+app.get('/api/waitList', function(req, res){	
+		res.json(waitList);
 })
 
 // Create New Tables/Waitlist - takes in JSON input
@@ -123,11 +72,10 @@ app.listen(PORT, function(){
 	console.log('App listening on PORT ' + PORT);
 })
 
-var counter = tables.length + 1;
-var data = true;
+
 
 function arraySelector(newTable, res){
-	if (counter > 4) {
+	if (tables.length >= 5) {
 		var wait = newTable;
 		waitList.push(wait);
 		res.json(wait);
@@ -143,7 +91,6 @@ function arraySelector(newTable, res){
 
 function clearTables() {
 	tables = [];
-	counter = tables.length + 1;
 	waitList = [];
 	data = true;
 };
