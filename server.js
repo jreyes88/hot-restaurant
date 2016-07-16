@@ -15,33 +15,62 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/vnd.api+json'}));
 
-// Star Wars Characters (DATA)
+// Reserved Table (DATA)
 // =============================================================
-var characters = [
+var tables = [
 
-	{
-		routeName: "yoda",
-		name: "Yoda",
-		role: "Jedi Master",
-		age: 900,
-		forcePoints: 2000		
+	{	
+		customerName: "Justin",
+		phoneNumber: "512-740-1881",
+		customerEmail: "justinrleblanc@yahoo.com",
+		customerID: "JustinL"		
 	},
 
 	{
-		routeName: "darthmaul",
-		name: "Darth Maul",
-		role: "Sith Lord",
-		age: 200,
-		forcePoints: 1200		
+		customerName: "Chance",
+		phoneNumber: "512-555-1234",
+		customerEmail: "chance@email.com",
+		customerID: "Chance"		
 	},
 
 	{
-		routeName: "obiwankenobi",
-		name: "Obi Wan Kenobi",
-		role: "Jedi Master",
-		age: 55,
-		forcePoints: 1350
+		customerName: "Joey",
+		phoneNumber: "512-668-1234",
+		customerEmail: "joey@mymail.com",
+		customerID: "Joey"
+	},
+
+	{
+		customerName: "Sam",
+		phoneNumber: "512-669-1234",
+		customerEmail: "sam@mymail.com",
+		customerID: "Sam"
+	},
+
+	{
+		customerName: "Lisa",
+		phoneNumber: "512-668-1235",
+		customerEmail: "lisa@mymail.com",
+		customerID: "Lisa"
 	}
+]
+
+var waitlist = [
+
+	{	
+		customerName: "Yoda",
+		phoneNumber: "Jedi Master",
+		customerEmail: "yoda@starwars.com",
+		customerID: "Yoda"		
+	},
+
+	{
+		customerName: "Boba Fett",
+		phoneNumber: "999-222-1111",
+		customerEmail: "bobafett@starwars.com",
+		customerID: "Boba"		
+	}
+
 ]
 
 // Routes
@@ -49,56 +78,81 @@ var characters = [
 
 // Basic route that sends the user first to the AJAX Page
 app.get('/', function(req, res){
-	res.sendFile(path.join(__dirname, 'view.html'));
+	res.sendFile(path.join(__dirname, 'index.html'));
 })
 
-app.get('/add', function(req, res){
-	res.sendFile(path.join(__dirname, 'add.html'));
+app.get('/reserve', function(req, res){
+	res.sendFile(path.join(__dirname, 'reserve.html'));
+
 })
 
-app.get('/all', function(req, res){
-	res.sendFile(path.join(__dirname, 'all.html'));
+app.get('/tables', function(req, res){
+	res.sendFile(path.join(__dirname, 'table.html'));
+	
 })
 
 // Search for Specific Character (or all characters) - provides JSON
-app.get('/api/:characters?', function(req, res){
-
-	var chosen = req.params.characters;
-
-	if(chosen){
-		console.log(chosen);
-
-		for (var i=0; i <characters.length; i++){
-
-			if (chosen == characters[i].routeName){
-				res.json(characters[i]);
-				return;
-			}
-		}
-
-		res.json(false);
-	}
-
-	else{
-		res.json(characters);
-	}
+app.get('/api/tables', function(req, res){	
+		res.json(tables);
 })
 
-// Create New Characters - takes in JSON input
+app.get('/api/waitlist', function(req, res){	
+		res.json(waitlist);
+})
+
+// Create New Tables/Waitlist - takes in JSON input
+// 
+function postTable() {
 app.post('/api/new', function(req, res){
 
-	var newcharacter = req.body;
-	newcharacter.routeName = newcharacter.name.replace(/\s+/g, '').toLowerCase()
+	var newTable = req.body;
+	newtable.customerID = newTable.name.replace(/\s+/g, '').toLowerCase()
 
-	console.log(newcharacter);
+	console.log(newTable);
 
-	characters.push(newcharacter);
+	characters.push(newTable);
 
-	res.json(newcharacter);
+	res.json(newTable);
 })
+};
+
+function postWait(){
+app.post('/api/new', function(req, res){
+
+	var newWait = req.body;
+	newWait.customerID = newWait.name.replace(/\s+/g, '').toLowerCase()
+
+	console.log(newWait);
+
+	characters.push(newWait);
+
+	res.json(newWait);
+})
+}
 
 // Starts the server to begin listening 
 // =============================================================
 app.listen(PORT, function(){
 	console.log('App listening on PORT ' + PORT);
 })
+
+var counter = 0;
+var data = true;
+​
+function arraySelector(newTable){
+	if (counter >= 5) {
+		waitList.push(postWait());
+		counter ++;
+		data = false;
+	} else {
+		tables.push(postTable());
+		counter ++;
+	}
+}
+​
+function clearTables() {
+	tables = [];
+	waitList = [];
+	counter = 0;
+	data = true;
+};
