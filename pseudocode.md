@@ -8,8 +8,9 @@ Main.js - handles the business.
 
 Bootstrap and Jquery in the html files.
 
-Server Dependencies:
+Server:
 	Express
+	Node
 	Bodyparser
 	Path - a core module
 
@@ -36,11 +37,3 @@ Creating a table reservation system/waitlist.
 			With an ajax call .Post
 			Inline scripting in the html file
 		Clear table = deletes array of tables
-
-questions:
-
-How many arrays?
-two
-
-how are we dealing with sorting?
-if else statement and a counter variable
