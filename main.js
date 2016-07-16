@@ -55,7 +55,7 @@ var tables = [
 	}
 ]
 
-var waitlist = [
+var waitList = [
 
 	{	
 		customerName: "Yoda",
@@ -106,12 +106,13 @@ app.get('/api/waitlist', function(req, res){
 app.post('/api/tables', function(req, res){
 
 	console.log("in the post");
-	// var newTable = req.body;
-	// newtable.customerID = newTable.name.replace(/\s+/g, '').toLowerCase()
+	console.log(req.body);
+	var newTable = req.body
+	newTable.customerID = newTable.customerName.replace(/\s+/g, '').toLowerCase();
 
-	// console.log(newTable);
+	console.log(newTable);
 
-	// characters.push(newTable);
+	arraySelector(newTable, res);
 
 	// res.json(newTable);
 })
@@ -122,23 +123,27 @@ app.listen(PORT, function(){
 	console.log('App listening on PORT ' + PORT);
 })
 
-var counter = 0;
+var counter = tables.length + 1;
 var data = true;
 
-function arraySelector(newTable){
-	if (counter >= 5) {
-		waitList.push(newTable);
+function arraySelector(newTable, res){
+	if (counter > 4) {
+		var wait = newTable;
+		waitList.push(wait);
+		res.json(wait);
 		counter ++;
 		data = false;
 	} else {
-		tables.push(newTable);
+		var getASeat = newTable;
+		tables.push(getASeat);
+		res.json(getASeat)
 		counter ++;
 	}
 }
 
 function clearTables() {
 	tables = [];
+	counter = tables.length + 1;
 	waitList = [];
-	counter = 0;
 	data = true;
 };
