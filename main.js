@@ -19,7 +19,6 @@ app.use(bodyParser.json({type:'application/vnd.api+json'}));
 // Reserved Table (DATA)
 // =============================================================
 var tables = [];
-
 var waitList = [];
 
 // Routes
@@ -30,39 +29,35 @@ app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname, 'index.html'));
 })
 
+// Route that sends user to the reservation page (which has reservation table)
 app.get('/reserve', function(req, res){
 	res.sendFile(path.join(__dirname, 'reserve.html'));
 
 })
 
+// Route that sends user to the table page, which shows all reserved/waitlisted tables
 app.get('/tables', function(req, res){
 	res.sendFile(path.join(__dirname, 'table.html'));
 	
 })
 
-// Search for Specific Character (or all characters) - provides JSON
+// Creates JSON object for tables
 app.get('/api/tables', function(req, res){	
 		res.json(tables);
 })
 
+// Creates JSON object for reservations
 app.get('/api/waitList', function(req, res){	
 		res.json(waitList);
 })
 
-// Create New Tables/Waitlist - takes in JSON input
-// 
-
 app.post('/api/tables', function(req, res){
-
-	console.log("in the post");
-	console.log(req.body);
+	// console.log(req.body); -- shows the json object
 	var newTable = req.body
 	newTable.customerID = newTable.customerName.replace(/\s+/g, '').toLowerCase();
 
-	// console.log(newTable);
-
 	data = arraySelector(newTable, res);
-	console.log(data);
+	// console.log(data); -- true/false boolean that controls table/wailist logic (see arraySelector function below);
 	res.json(data);
 })
 
@@ -72,20 +67,20 @@ app.listen(PORT, function(){
 	console.log('App listening on PORT ' + PORT);
 })
 
+// array selector function that determines table/waitlist posting
 function arraySelector(newTable, res){
 	if (tables.length >= 5) {
-		console.log("if");
 		var wait = newTable;
 		waitList.push(wait);
 		data = false;
 	} else {
-		console.log("else");
 		var getASeat = newTable;
 		tables.push(getASeat);
 	}
 	return data;
 }
 
+// function to clear tables. Does not work at the moment
 function clearTables() {
 	tables = [];
 	waitList = [];
