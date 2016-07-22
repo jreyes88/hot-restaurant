@@ -61,6 +61,11 @@ app.post('/api/tables', function(req, res){
 	res.json(data);
 })
 
+app.post('/api/clear', function(req,res){
+	tables = [];
+	waitlist = [];
+})
+
 // Starts the server to begin listening 
 // =============================================================
 app.listen(PORT, function(){
